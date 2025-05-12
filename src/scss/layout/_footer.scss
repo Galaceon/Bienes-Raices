@@ -2,6 +2,7 @@
 @use 'base/mixins' as m;
 
 .footer {
+    margin: 0;
     padding: 2.5rem;
     background-color: v.$grisOscuro;
     .contenido-footer {
