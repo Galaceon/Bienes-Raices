@@ -22,7 +22,7 @@ const paths = {
 function css() {
     return src(paths.scss)
         .pipe(sourcemaps.init())
-        .pipe(sass())
+        .pipe(sass().on('error', sass.logError))
         .pipe(postcss([autoprefixer(), cssnano()]))
         // .pipe(postcss([autoprefixer()]))
         .pipe(sourcemaps.write('.'))
@@ -40,14 +40,13 @@ function javascript() {
 }
 
 function imagenes() {
-    return src(paths.imagenes)
+    return src([paths.imagenes, '!src/img/**/*.svg']) // Excluye SVGs
         .pipe(cache(imagemin({
             optimizationLevel: 3,
             progressive: true,
             interlaced: true
         })))
-        // .pipe(notify({ message: 'Imagenes optimizadas' }))
-        .pipe(dest('build/img'))
+        .pipe(dest('build/img'));
 }
 
 function versionWebp() {
