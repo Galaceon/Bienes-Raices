@@ -1,4 +1,5 @@
 @use 'variables' as v;
+@use "sass:color";
 
 @mixin telefono {
     @media (min-width: v.$telefono) {
@@ -34,4 +35,20 @@
     display: grid;
     grid-template-columns: repeat($columns, 1fr);
     grid-gap: $gap;
+}
+
+@mixin boton($bgcolor, $display) {
+    background-color: $bgcolor;
+    color: v.$blanco;
+    font-weight: v.$bold;
+    text-decoration: none;
+    padding: 1rem 3rem;
+    text-align: center;
+    margin-top: 2.5rem;
+    display: $display;
+    transition: background-color 0.3s ease;
+    &:hover {
+        
+        background-color: color.scale($bgcolor, $lightness: -15%);
+    }
 }
