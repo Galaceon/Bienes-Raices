@@ -27,16 +27,17 @@
 
     .contenido-anuncio {
         padding: 0 1.5rem 2rem 1.5rem;
-
-        .precio {
-            font-size: 3rem;
-            color: v.$amarillo;
-            font-weight: v.$bold;
-        }
     }
 }
 
+.precio {
+    font-size: 3rem;
+    color: v.$amarillo;
+    font-weight: v.$bold;
+}
+
 .iconos-caracteristicas {
+    max-width: 40rem;
     padding: 0 2rem;
     gap: 4rem;
     justify-content: center;
