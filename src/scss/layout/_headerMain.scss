@@ -3,27 +3,26 @@
 
 .header {
     padding: 0 0 1rem 0;
+    height: 70rem;
+    position: relative;
+    overflow: hidden;
 }
 
 .header-image {
-    position: relative;
-    width: 100%;
-    height: 70rem;
+    position: absolute;
+    inset: 0;
 
     img {
-        object-position: 30% 30%;
+        object-position: 30% 35%;
         object-fit: cover;
         height: 100%;
     }
 }
 
 .contenido-header {
-    padding: 2rem;
     position: absolute;
     inset: 0;
-    z-index: 100;
-
-    height: 100%;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
