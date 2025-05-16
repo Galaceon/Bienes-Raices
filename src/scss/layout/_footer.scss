@@ -9,8 +9,15 @@
         padding-top: 2.5rem;
     }
 
+    .navegacion {
+        visibility: visible;
+        opacity: 1;
+        height: auto;
+    }
+
     .copyright {
         color: v.$blanco;
         text-align: center;
+        margin: 1rem 0 2rem 0;
     }
 }
