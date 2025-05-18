@@ -1,3 +1,8 @@
+<?php 
+    declare(strict_types= 1);
+
+    require 'includes/funciones.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,12 +13,12 @@
     </head>
     <body>
 
-        <header class="header inicio">
+        <header class="header">
             <div class="header-image">
-                <img src="build/img/header.jpg" alt="">
+                <img src="build/img/header.webp" alt="">
                 <div class="contenedor contenido-header">
                     <div class="barra">
-                        <a href="index.html">
+                        <a href="index.php">
                             <img src="build/img/logo.svg" alt="Logotipo de Bienes Raices">
                         </a>
 
@@ -24,10 +29,10 @@
                         <div class="derecha">
                             <img class="dark-mode-boton" src="build/img/dark-mode.svg">
                             <nav class="navegacion">
-                                <a href="nosotros.html">Nosotros</a>
-                                <a href="anuncios.html">Anuncios</a>
-                                <a href="blog.html">Blog</a>
-                                <a href="contacto.html">Contacto</a>
+                                <a href="nosotros.php">Nosotros</a>
+                                <a href="anuncios.php">Anuncios</a>
+                                <a href="blog.php">Blog</a>
+                                <a href="contacto.php">Contacto</a>
                                 </nav>
                         </div>
                     </div> <!--.barra -->
@@ -74,7 +79,7 @@
 
             <div class="contenedor-anuncios">
                 <div class="anuncio"> 
-                    <img src="build/img/anuncio1.jpg">
+                    <img loading="lazy" src="build/img/anuncio1.webp">
     
                     <div class="contenido-anuncio">
                         <h3>Casa de Lujo en el Lago</h3>
@@ -96,14 +101,14 @@
                             </li>
                         </ul>
 
-                        <a href="anuncios.html" class="boton-amarillo-block">
+                        <a href="anuncios.php" class="boton-amarillo-block">
                             Ver Propiedad
                         </a>
                     </div>
                 </div>
 
                 <div class="anuncio">
-                    <img src="build/img/anuncio2.jpg">
+                    <img src="build/img/anuncio2.webp">
                 
                     <div class="contenido-anuncio">
                         <h3>Casa Terminados de Lujo</h3>
@@ -125,14 +130,14 @@
                             </li>
                         </ul>
 
-                        <a href="anuncios.html" class="boton-amarillo-block">
+                        <a href="anuncios.php" class="boton-amarillo-block">
                             Ver Propiedad
                         </a>
                     </div>
                 </div>
 
                 <div class="anuncio">
-                    <img src="build/img/anuncio3.jpg">
+                    <img loading="lazy" src="build/img/anuncio3.webp">
                 
                     <div class="contenido-anuncio">
                         <h3>Casa con alberca</h3>
@@ -154,7 +159,7 @@
                             </li>
                         </ul>
 
-                        <a href="anuncios.html" class="boton-amarillo-block">
+                        <a href="anuncios.php" class="boton-amarillo-block">
                             Ver Propiedad
                         </a>
                     </div> <!-- contenido anuncio -->
@@ -162,14 +167,14 @@
             </div> <!-- contenedor anuncios -->
 
             <div class="alinear-derecha">
-                <a href="anuncios.html" class="boton-verde">Ver Todas</a>
+                <a href="anuncios.php" class="boton-verde">Ver Todas</a>
             </div>
         </section>
 
         <section class="imagen-contacto">
             <h2>Encuentra la casa de tus sueños</h2>
             <p>LLena el formulario de contacto y un asesor se pondrá en contacto contigo a la breveda</p>
-            <a href="contacto.html" class="boton-amarillo">Contactanos</a>
+            <a href="contacto.php" class="boton-amarillo">Contactanos</a>
         </section>
 
         <div class="contenedor secction seccion-inferior">
@@ -178,11 +183,11 @@
 
                 <article class="entrada-blog">
                     <div class="imagen">
-                        <img src="build/img/blog1.webp" alt="blog image">
+                        <img loading="lazy" src="build/img/blog1.webp" alt="blog image">
                     </div>
 
                     <div class="texto-entrada">
-                        <a href="entrada.html">
+                        <a href="entrada.php">
                             <h4>Terraza en el techo de tu casa</h4>
                             <p>Escritorio el: <span> 20/10/2025 </span> por: <span>Admin</span> </p>
 
@@ -196,11 +201,11 @@
 
                 <article class="entrada-blog">
                     <div class="imagen">
-                        <img src="build/img/blog2.webp" alt="blog image">
+                        <img loading="lazy" src="build/img/blog2.webp" alt="blog image">
                     </div>
                 
                     <div class="texto-entrada">
-                        <a href="entrada.html">
+                        <a href="entrada.php">
                             <h4>Guía para la decoración de tu hogar</h4>
                             <p>Escritorio el: <span> 20/10/2025 </span> por: <span>Admin</span> </p>
                 
@@ -226,19 +231,4 @@
             </section>
         </div>
 
-        <footer class="footer seccion">
-            <div class="contenedor contenedor-footer">
-                <nav class="navegacion">
-                    <a href="nosotros.html">Nosotros</a>
-                    <a href="anuncios.html">Anuncios</a>
-                    <a href="blog.html">Blog</a>
-                    <a href="contacto.html">Contacto</a>
-                </nav>
-            </div>
-            <p class="copyright">Todos los Derecho Reservado 2025 &copy;</p>
-        </footer>
-
-
-        <script src="build/js/bundle.min.js"></script>
-    </body>
-</html>
+<?php incluirTemplate('footer'); ?>
