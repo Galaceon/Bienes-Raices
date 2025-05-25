@@ -2,10 +2,9 @@
     // Base de datos
 
     require '../../includes/config/database.php';
-
     $db = conectarDB();
 
-    // Consulta para obtener los vendedores  NOTES
+    // Consulta para obtener los vendedores
     $consulta = "SELECT * FROM vendedores";
     $resultado = mysqli_query($db, $consulta);
 
@@ -13,6 +12,8 @@
     // Array con mensajes de errores
     $errores = [];
 
+
+    // Variables vacia para el name = '$variable' de los inputs
     $titulo = "";
     $precio = "";
     $descripcion = "";
@@ -23,12 +24,9 @@
 
     //Ejecutar el código despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        
-        $resultado = filter_var($numero)
-
-        exit;
 
 
+        // Variables llenas para cuando el name = '$variable' sea rellenado y se guarde lo que escribio el cliente
         $titulo = mysqli_real_escape_string($db, $_POST["titulo"]);
         $precio = mysqli_real_escape_string($db, $_POST["precio"]);
         $descripcion = mysqli_real_escape_string($db, $_POST["descripcion"]);
@@ -36,8 +34,13 @@
         $wc = mysqli_real_escape_string($db, $_POST["wc"]);
         $estacionamiento = mysqli_real_escape_string($db, $_POST["estacionamiento"]);
         $vendedorId = mysqli_real_escape_string($db, $_POST["vendedor"]);
-        $creado = date('Y/m/d');     // NOTES
+        $creado = date('Y/m/d');
 
+        // Asignar files hacia una variable
+        $imagen = $_FILES['imagen'];
+
+
+        // Verificacion de la existencia del contenido (mensajes a imprimir en DOM en caso de error)
         if(!$titulo) {
             $errores[] = "Debes añadir un titulo";
         }
@@ -59,8 +62,19 @@
         if(!$vendedorId) {
             $errores[] = "Debes añadir un vendedor";
         }
+        if(!$imagen['name'] || $imagen['error']) { // NOTAS
+            $errores[] = 'La imagen es obligatoria';
+        }
 
-        // Revisar que el arreglo de errores este vacio
+
+        //Validar por tamaño (100Kb máximo)
+        $medida = 1000 * 100;
+        if($imagen['size'] > $medida) { // NOTAS
+            $errores[] = 'La imagen es muy pesada';
+        }
+
+
+        // Revisar que el arreglo de errores este vacio para enviar la info a la db
         if(empty($errores)) {
             //Insertar en la base de datos
             $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, creado, vendedorId) 
@@ -70,7 +84,7 @@
             $resultado = mysqli_query($db, $query);
 
             if($resultado) {
-                // Redireccionar al usuario        NOTES
+                // Redireccionar al usuario
                 header("Location: /admin");
             }
         }
@@ -92,11 +106,12 @@
 
         <a href="/admin" class="boton boton-verde">Volver</a>
 
+        <!-- Creacion en el DOM mensajes de error por cada elm en el array de $error-->
         <?php foreach($errores as $error) { ?>
             <div class="alerta error"> <?php echo $error ?> </div>
         <?php } ?>
 
-        <form class="formulario" method="POST" action="/admin/propiedades/crear.php">
+        <form class="formulario" method="POST" action="/admin/propiedades/crear.php" enctype="multipart/form-data">
             <fieldset>
                 <legend>Informacion General</legend>
 
@@ -107,7 +122,7 @@
                 <input type="number" id=precio" name="precio" placeholder="Precio Propiedad" value="<?php echo $precio; ?>">
 
                 <label for="imagen">Imagen:</label>
-                <input type="file" id=imagen" accept="'image/jpeg, image/png">
+                <input type="file" id="imagen" accept="image/jpg, image/png, image/jpeg" name="imagen">
                 
                 <label for="descripcion">Descripcion:</label>
                 <textarea id="descripcion" name="descripcion"> <?php echo $descripcion; ?> </textarea>
@@ -130,7 +145,8 @@
                 <legend>Vendedor</legend>
 
                 <select name="vendedor">
-                    <option value="">-- Seleccione --</option> <!-- NOTES -->
+                    <option value="">-- Seleccione --</option>
+                    <!-- Bucle para insertar un option por cada vendedor de la DB -->
                     <?php while($vendedor = mysqli_fetch_assoc($resultado)) : ?>
                         <option <?php echo $vendedorId === $vendedor['id'] ? 'selected' : ''; ?> value="<?php echo $vendedor['id']; ?>"> 
                             <?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?>
@@ -143,4 +159,5 @@
         </form>
     </main>
 
+<!-- Footer -->
 <?php incluirTemplate('footer'); ?>
