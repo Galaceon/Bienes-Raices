@@ -101,7 +101,7 @@
 
             if($resultado) {
                 // Redireccionar al usuario
-                header("Location: /admin?resultado=1");
+                header("Location: /admin?resultado=1"); // NOTAS
             }
         }
     }
