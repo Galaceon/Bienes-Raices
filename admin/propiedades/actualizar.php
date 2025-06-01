@@ -1,8 +1,20 @@
 <?php
-    // Base de datos
+    // Validar al URL por ID valido
+    $id = $_GET['id'];
+    $id = filter_var($id, FILTER_VALIDATE_INT);
 
+    if (!$id) {
+        header('Location: /admin');
+    }
+
+    // Base de datos
     require '../../includes/config/database.php';
     $db = conectarDB();
+
+    // Obtener los datos de la propiedad
+    $consulta = "SELECT * FROM propiedades WHERE id = $id";
+    $resultado = mysqli_query($db, $consulta);
+    $propiedad = mysqli_fetch_assoc($resultado);
 
     // Consulta para obtener los vendedores
     $consulta = "SELECT * FROM vendedores";
@@ -12,15 +24,15 @@
     // Array con mensajes de errores
     $errores = [];
 
-
     // Variables vacia para el name = '$variable' de los inputs
-    $titulo = "";
-    $precio = "";
-    $descripcion = "";
-    $habitaciones = "";
-    $wc = "";
-    $estacionamiento = "";
-    $vendedorId = "";
+    $titulo = $propiedad['titulo'];
+    $precio = $propiedad['precio'];
+    $descripcion = $propiedad['descripcion'];
+    $habitaciones = $propiedad['habitaciones'];
+    $wc = $propiedad['wc'];
+    $estacionamiento = $propiedad['estacionamiento']; 
+    $vendedorId = $propiedad['vendedorId'];
+    $imagenPropiedad = $propiedad['imagen'];
 
     //Ejecutar el código despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -62,14 +74,12 @@
         if(!$vendedorId) {
             $errores[] = "Debes añadir un vendedor";
         }
-        if(!$imagen['name'] || $imagen['error']) { // NOTAS
-            $errores[] = 'La imagen es obligatoria';
-        }
+        // 2 NOTAS Verificacion de imagen borrada, ya no es necesario verificarla
 
 
         //Validar por tamaño (100Kb máximo) 
         $medida = 1000 * 100;
-        if($imagen['size'] > $medida) { // NOTAS
+        if($imagen['size'] > $medida) {
             $errores[] = 'La imagen es muy pesada';
         }
 
@@ -93,15 +103,15 @@
             move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
 
             //Insertar en la base de datos
-            $query = "INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, creado, vendedorId) 
-                    VALUES ('$titulo', '$precio', '$nombreImagen', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado', '$vendedorId')";
+            $query = "UPDATE propiedades SET titulo = '$titulo', precio = '$precio', descripcion = '$descripcion', habitaciones = '$habitaciones', wc = '$wc', 
+            estacionamiento = '$estacionamiento', vendedorId = '$vendedorId', WHERE id = $id ";  // 3 NOTAS modificamos el query, cambiamos el INSERT por UPDATE
 
             // echo $query | Inserción final en la DB
             $resultado = mysqli_query($db, $query);
 
             if($resultado) {
                 // Redireccionar al usuario
-                header("Location: /admin?resultado=1"); // NOTAS
+                header("Location: /admin?resultado=2"); // 4 NOTAS, cambiamos resultado=1, por 2
             }
         }
     }
@@ -127,7 +137,7 @@
             <div class="alerta error"> <?php echo $error ?> </div>
         <?php } ?>
 
-        <form class="formulario" method="POST" action="/admin/propiedades/crear.php" enctype="multipart/form-data">
+        <form class="formulario" method="POST" enctype="multipart/form-data"> <!-- 1 NOTAS Borramos el action para que nos redirija a misma URL con el mismo id -->
             <fieldset>
                 <legend>Informacion General</legend>
 
@@ -138,7 +148,10 @@
                 <input type="number" id=precio" name="precio" placeholder="Precio Propiedad" value="<?php echo $precio; ?>">
 
                 <label for="imagen">Imagen:</label>
-                <input type="file" id="imagen" accept="image/jpg, image/png, image/jpeg" name="imagen">
+                <input type="file" id="imagen" accept="image/jpg, image/png, image/jpeg" name="imagen"> 
+                <!-- El input de imagen no se debe autcompletar en actualizar, trae problemas de seguridad, en cambio le 
+                 pondremos la imagen actual de esa propiedad/id -->
+                <img src="/imagenes/<?php echo $imagenPropiedad;?>" class="imagen-small">
                 
                 <label for="descripcion">Descripcion:</label>
                 <textarea id="descripcion" name="descripcion"> <?php echo $descripcion; ?> </textarea>

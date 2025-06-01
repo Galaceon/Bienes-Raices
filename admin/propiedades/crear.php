@@ -62,14 +62,14 @@
         if(!$vendedorId) {
             $errores[] = "Debes añadir un vendedor";
         }
-        if(!$imagen['name'] || $imagen['error']) { // NOTAS
+        if(!$imagen['name'] || $imagen['error']) {
             $errores[] = 'La imagen es obligatoria';
         }
 
 
-        //Validar por tamaño (100Kb máximo) 
-        $medida = 1000 * 100;
-        if($imagen['size'] > $medida) { // NOTAS
+        //Validar por tamaño (1000Kb máximo) 
+        $medida = 1000 * 1000;
+        if($imagen['size'] > $medida) {
             $errores[] = 'La imagen es muy pesada';
         }
 
@@ -101,7 +101,7 @@
 
             if($resultado) {
                 // Redireccionar al usuario
-                header("Location: /admin?resultado=1"); // NOTAS
+                header("Location: /admin?resultado=1");
             }
         }
     }
