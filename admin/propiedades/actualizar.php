@@ -77,8 +77,8 @@
         // 2 NOTAS Verificacion de imagen borrada, ya no es necesario verificarla
 
 
-        //Validar por tamaño (100Kb máximo) 
-        $medida = 1000 * 100;
+        //Validar por tamaño (1mb máximo) 
+        $medida = 1000 * 1000;
         if($imagen['size'] > $medida) {
             $errores[] = 'La imagen es muy pesada';
         }
@@ -86,9 +86,6 @@
 
         // Revisar que el arreglo de errores este vacio para enviar la info a la db
         if(empty($errores)) {
-
-            /** SUBIDA DE ARCHIVOS */
-
             //Crear carpeta
             $carpetaImagenes = '../../imagenes/';
 
@@ -96,15 +93,28 @@
                 mkdir($carpetaImagenes);
             }
 
-            //Generar un nombre único
-            $nombreImagen = md5( uniqid(rand(), true) ) . ".jpg";
+            $nombreImagen = ''; // 5 NOTAS Nombre de imagen vacio para agregarselo en la siguiente comprobacion
 
-            //Subir la imagen
-            move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
+            /** SUBIDA DE ARCHIVOS */
 
-            //Insertar en la base de datos
-            $query = "UPDATE propiedades SET titulo = '$titulo', precio = '$precio', descripcion = '$descripcion', habitaciones = '$habitaciones', wc = '$wc', 
-            estacionamiento = '$estacionamiento', vendedorId = '$vendedorId', WHERE id = $id ";  // 3 NOTAS modificamos el query, cambiamos el INSERT por UPDATE
+            if($imagen['name']) { // 6 NOTAS Borrar Imagenes Repetidas si se sube nueva imagen
+                //Eliminar la imagen previa
+                unlink($carpetaImagenes . $propiedad['imagen']);
+
+                //Generar un nombre único
+                $nombreImagen = md5( uniqid(rand(), true) ) . ".jpg";
+
+                //Subir la imagen
+                move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen); 
+            } else {
+                $nombreImagen = $propiedad['imagen'];
+            }
+
+
+
+            //Insertar en la base de datos // 7 NOTAS Añadir al query $nombreImagen
+            $query = "UPDATE propiedades SET titulo = '$titulo', precio = '$precio', imagen = '$nombreImagen', descripcion = '$descripcion', habitaciones = '$habitaciones', wc = '$wc', 
+            estacionamiento = '$estacionamiento', vendedorId = '$vendedorId' WHERE id = $id ";  // 3 NOTAS modificamos el query, cambiamos el INSERT por UPDATE
 
             // echo $query | Inserción final en la DB
             $resultado = mysqli_query($db, $query);
