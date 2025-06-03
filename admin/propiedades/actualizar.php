@@ -74,7 +74,6 @@
         if(!$vendedorId) {
             $errores[] = "Debes añadir un vendedor";
         }
-        // 2 NOTAS Verificacion de imagen borrada, ya no es necesario verificarla
 
 
         //Validar por tamaño (1mb máximo) 
@@ -93,11 +92,13 @@
                 mkdir($carpetaImagenes);
             }
 
-            $nombreImagen = ''; // 5 NOTAS Nombre de imagen vacio para agregarselo en la siguiente comprobacion
+            //Nombre de imagen vacio para agregarselo en la siguiente comprobacion
+            $nombreImagen = ''; 
 
             /** SUBIDA DE ARCHIVOS */
 
-            if($imagen['name']) { // 6 NOTAS Borrar Imagenes Repetidas si se sube nueva imagen
+            // Borrar Imagenes Repetidas si se sube nueva imagen, si no se deja la misma
+            if($imagen['name']) { 
                 //Eliminar la imagen previa
                 unlink($carpetaImagenes . $propiedad['imagen']);
 
@@ -107,21 +108,22 @@
                 //Subir la imagen
                 move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen); 
             } else {
+                // Dejar misma imagen
                 $nombreImagen = $propiedad['imagen'];
             }
 
 
 
-            //Insertar en la base de datos // 7 NOTAS Añadir al query $nombreImagen
+            //Actualizar en la base de datos
             $query = "UPDATE propiedades SET titulo = '$titulo', precio = '$precio', imagen = '$nombreImagen', descripcion = '$descripcion', habitaciones = '$habitaciones', wc = '$wc', 
-            estacionamiento = '$estacionamiento', vendedorId = '$vendedorId' WHERE id = $id ";  // 3 NOTAS modificamos el query, cambiamos el INSERT por UPDATE
+            estacionamiento = '$estacionamiento', vendedorId = '$vendedorId' WHERE id = $id ";
 
             // echo $query | Inserción final en la DB
             $resultado = mysqli_query($db, $query);
 
             if($resultado) {
                 // Redireccionar al usuario
-                header("Location: /admin?resultado=2"); // 4 NOTAS, cambiamos resultado=1, por 2
+                header("Location: /admin?resultado=2");
             }
         }
     }
@@ -147,7 +149,7 @@
             <div class="alerta error"> <?php echo $error ?> </div>
         <?php } ?>
 
-        <form class="formulario" method="POST" enctype="multipart/form-data"> <!-- 1 NOTAS Borramos el action para que nos redirija a misma URL con el mismo id -->
+        <form class="formulario" method="POST" enctype="multipart/form-data">
             <fieldset>
                 <legend>Informacion General</legend>
 
