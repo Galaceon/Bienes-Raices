@@ -1,8 +1,7 @@
 <?php 
-    declare(strict_types= 1);
 
     require 'includes/funciones.php'; // Para hacer uso de las funciones del archivo funciones.php
-    incluirTemplate('header', $inicio = true); // funcion de funciones.php, devuelve el string 'header' y un valor boool que sera usado en la función
+    incluirTemplate('header', $inicio = true); // funcion de funciones.php, devuelve el string 'header' y un valor bool que sera usado en la función
 ?>
 
     <section class="contenedor seccion">

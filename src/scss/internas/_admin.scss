@@ -34,12 +34,6 @@ table.propiedades {
     .imagen-tabla {
         width: 12rem;
     }
-
-    tbody {
-        tr:nth-child(odd) {
-            background-color: v.$gris;
-        }
-    }
 }
 
 .imagen-small {

@@ -26,18 +26,25 @@
             $query = "SELECT * FROM usuarios WHERE email = '$email'";
             $resultado = mysqli_query( $db, $query );
 
-            echo "<pre>";
-            var_dump($resultado);
-            echo "</pre>";
-
             // 2NOTA num_rows te permite saber si un registro existe despues de una consulta
             if($resultado->num_rows) {
                 // Revisar si el password es correcto
                 $usuario = mysqli_fetch_assoc($resultado);
 
-                echo "<pre>";
-                var_dump($usuario);
-                echo "</pre>";
+                // Verificar si el password es correcto o no
+                $auth = password_verify($password, $usuario["password"]);
+
+                if($auth) {
+                    //El usuario esta autenticado || 3NOTAS session_start() u $_SESSION
+                    session_start();
+
+                    //Llenar el arreglo de la sesión
+                    $_SESSION["usuario"] = $usuario["email"];
+                    $_SESSION["login"] = true;
+                } else {
+                    $errores[] = "El password es incorrecto";
+                }
+
             }else {
                 $errores[] = "El usuario no existe";
             }

@@ -1,5 +1,12 @@
 <?php
-    declare(strict_types= 1);
+    require '../includes/funciones.php';
+    $auth = estaAutenticado();
+
+    if(!$auth) {
+        header('location: /');
+    }
+
+
     // Importar la conexión
     require "../includes/config/database.php";
     $db = conectarDB();
@@ -40,7 +47,6 @@
 
 
     // Incluir template
-    require '../includes/funciones.php';
     incluirTemplate('header');
 ?>
 
